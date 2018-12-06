@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="zh-CN">
+
+<head>
+    <!-- 原始地址：//webapi.amap.com/ui/1.0/ui/geo/DistrictExplorer/examples/index.html -->
+    <base href="//webapi.amap.com/ui/1.0/ui/geo/DistrictExplorer/examples/" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+    <title>行政区浏览</title>
+    <link rel="stylesheet" type="text/css" href="./area.css">
+</head>
+
+<body>
+<div id="outer-box">
+    <div id="container" tabindex="0"></div>
+    <div id="panel" class="scrollbar1">
+        <ul id="area-tree">
+        </ul>
+    </div>
+</div>
+<script type="text/javascript" src='//webapi.amap.com/maps?v=1.4.11&key=35a871e5905ecfd749bd998448b9cd03'></script>
+<!-- UI组件库 1.0 -->
+<script src="//webapi.amap.com/ui/1.0/main.js?v=1.0.11"></script>
+<script type="text/javascript">
+    //创建地图
+    var map = new AMap.Map('container', {
+        zoom: 4
+    });
+    //just some colors
+    var colors = [
+        "#3366cc", "#dc3912", "#ff9900", "#109618", "#990099", "#0099c6", "#dd4477", "#66aa00",
+        "#b82e2e", "#316395", "#994499", "#22aa99", "#aaaa11", "#6633cc", "#e67300", "#8b0707",
+        "#651067", "#329262", "#5574a6", "#3b3eac"
+    ];
+
+    window.AMapUI.loadUI(['geo/DistrictExplorer'], DistrictExplorer => {
+
+        //创建一个实例
+        var districtExplorer = window.districtExplorer = new DistrictExplorer({
+            eventSupport: true, //打开事件支持
+            map: map
+        });
+
+        var currentAreaNode;
+
+        //填充某个节点的子区域列表
+        function renderAreaPanel(areaNode) {
+
+            console.log(areaNode.getSubFeatures());
+            console.log(areaNode.getParentFeature());
+
+            renderAreaPolygons(areaNode)
+        }
+
+        //绘制某个区域的边界
+        function renderAreaPolygons(areaNode) {
+
+            //更新地图视野
+            map.setBounds(areaNode.getBounds(), null, null, true);
+
+            //清除已有的绘制内容
+            districtExplorer.clearFeaturePolygons();
+
+            //绘制子区域
+            districtExplorer.renderSubFeatures(areaNode, function(feature, i) {
+
+                var fillColor = colors[i % colors.length];
+                var strokeColor = colors[colors.length - 1 - i % colors.length];
+
+                return {
+                    cursor: 'default',
+                    bubble: true,
+                    strokeColor: strokeColor, //线颜色
+                    strokeOpacity: 1, //线透明度
+                    strokeWeight: 1, //线宽
+                    fillColor: fillColor, //填充色
+                    fillOpacity: 0.35, //填充透明度
+                };
+            });
+
+            //绘制父区域
+            districtExplorer.renderParentFeature(areaNode, {
+                cursor: 'default',
+                bubble: true,
+                strokeColor: 'black', //线颜色
+                strokeOpacity: 1, //线透明度
+                strokeWeight: 1, //线宽
+                fillColor: null, //填充色
+                fillOpacity: 0.35, //填充透明度
+            });
+        }
+
+        //切换区域
+        function switch2AreaNode(adcode, callback) {
+
+            if (currentAreaNode && ('' + currentAreaNode.getAdcode() === '' + adcode)) {
+                return;
+            }
+
+            loadAreaNode(adcode, function(error, areaNode) {
+
+                if (error) {
+
+                    if (callback) {
+                        callback(error);
+                    }
+
+                    return;
+                }
+
+                currentAreaNode = window.currentAreaNode = areaNode;
+
+                //设置当前使用的定位用节点
+                districtExplorer.setAreaNodesForLocating([currentAreaNode]);
+
+                if (callback) {
+                    callback(null, areaNode);
+                }
+            });
+        }
+
+        //加载区域
+        function loadAreaNode(adcode, callback) {
+
+            districtExplorer.loadAreaNode(adcode, function(error, areaNode) {
+
+                if (error) {
+
+                    if (callback) {
+                        callback(error);
+                    }
+
+                    console.error(error);
+
+                    return;
+                }
+
+                renderAreaPanel(areaNode);
+
+                if (callback) {
+                    callback(null, areaNode);
+                }
+            });
+        }
+
+        //全国
+        switch2AreaNode(100000);
+    });
+</script>
+</body>
+
+</html>
