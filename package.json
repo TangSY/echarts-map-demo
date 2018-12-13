@@ -8,7 +8,12 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
-    "vue": "^2.5.17"
+    "axios": "^0.18.0",
+    "echarts": "^4.2.0-rc.2",
+    "mint-ui": "^2.2.13",
+    "qs": "^6.5.2",
+    "vue": "^2.5.17",
+    "vue-jsonp": "^0.1.8"
   },
   "devDependencies": {
     "@babel/preset-es2015": "^7.0.0-beta.51",
@@ -21,9 +26,9 @@
     "vue-template-compiler": "^2.5.16"
   },
   "eslintConfig": {
-    "root": true,
+    "root": false,
     "env": {
-      "node": true
+      "node": false
     },
     "extends": [
       "plugin:vue/essential",
