@@ -31,6 +31,8 @@
 
     .body {
         width 100%
+        background: url("./images/bg_bigdata.png") no-repeat
+        background-size 100% 100%
     }
 
     #map {

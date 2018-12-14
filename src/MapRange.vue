@@ -21,6 +21,12 @@
                 <div class="input-item-prepend"><span class="input-item-text">区县</span></div>
                 <select id='district' style="width:100px" @change='search("district")'></select>
             </div>
+            <p>请选择文件命名方式</p>
+            <div class="radio">
+                <input type="radio" value="name" v-model="nameType">地域名称
+                <input type="radio" value="code" v-model="nameType">地域行政编码
+            </div>
+            <div class="input-item download" @click="download">下载geoJson数据</div>
         </div>
     </div>
 </template>
@@ -30,7 +36,7 @@
         name: "MapRange",
         data() {
             return {
-
+                nameType: 'name'
             }
         },
         mounted() {
@@ -38,8 +44,11 @@
         },
         computed: {},
         methods: {
-            search(area){
-                this.$emit('change',area)
+            search(area) {
+                this.$emit('change', area);
+            },
+            download() {
+                this.$emit('click', this.nameType)
             }
         }
     }
@@ -48,13 +57,13 @@
 <style lang="stylus" scoped>
     @import "https://a.amap.com/jsapi_demos/static/demo-center/css/demo-center.css"
 
-    html,body,#container{
+    html, body, #container {
         width 100%
         height 100vh;
     }
 
-    #container{
-        width:100%;
+    #container {
+        width: 100%;
     }
 
     .body {
@@ -65,6 +74,26 @@
         position fixed
         top 10px
         left 10px
-        height 160px
+        height 250px
+    }
+
+    .radio {
+        margin: 3px 0;
+    }
+
+    .download {
+        display flex
+        justify-content center
+        align-items center
+        border: 1px solid #ced4da;
+        border-radius: .25rem;
+        background-color: #e9ecef;
+        color: #495057;
+        text-align center
+        cursor pointer
+    }
+
+    .download:active {
+        background-color: #e9ecef99;
     }
 </style>

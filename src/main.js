@@ -5,7 +5,6 @@ import Qs from 'qs'
 import {Toast, Indicator} from 'mint-ui'
 import echarts from 'echarts'
 import VueJsonp from 'vue-jsonp'
-
 Vue.use(VueJsonp)
 
 Vue.config.productionTip = false
