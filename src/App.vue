@@ -63,24 +63,24 @@
             });
         },
         methods: {
-echartsMapClick(params) {//地图点击事件
-    if (params.data.level == 'street') return;
-    //清除地图上所有覆盖物
-    for (var i = 0, l = this.polygons.length; i < l; i++) {
-        this.polygons[i].setMap(null);
-    }
-    this.cityName = params.data.name;
-    this.cityCode = params.data.cityCode;
-    this.district.setLevel(params.data.level); //行政区级别
-    this.district.setExtensions('all');
-    //行政区查询
-    //按照adcode进行查询可以保证数据返回的唯一性
-    this.district.search(this.cityCode, (status, result) => {
-        if (status === 'complete') {
-            this.getData(result.districtList[0], params.data.level, this.cityCode);
-        }
-    });
-},
+            echartsMapClick(params) {//地图点击事件
+                if (params.data.level == 'street') return;
+                //清除地图上所有覆盖物
+                for (var i = 0, l = this.polygons.length; i < l; i++) {
+                    this.polygons[i].setMap(null);
+                }
+                this.cityName = params.data.name;
+                this.cityCode = params.data.cityCode;
+                this.district.setLevel(params.data.level); //行政区级别
+                this.district.setExtensions('all');
+                //行政区查询
+                //按照adcode进行查询可以保证数据返回的唯一性
+                this.district.search(this.cityCode, (status, result) => {
+                    if (status === 'complete') {
+                        this.getData(result.districtList[0], params.data.level, this.cityCode);
+                    }
+                });
+            },
             loadMapData(areaCode) {
                 AMapUI.loadUI(['geo/DistrictExplorer'], DistrictExplorer => {
 
