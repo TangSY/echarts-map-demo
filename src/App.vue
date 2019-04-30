@@ -7,7 +7,7 @@
 <template>
     <div class="body">
         <div class="map">
-            <map-range @change="search" @click="downloadJson"></map-range>
+            <map-range @change="search" @click="downloadAllJson"></map-range>
         </div>
         <div class="echarts">
             <div id="map"></div>
@@ -16,6 +16,7 @@
 </template>
 
 <script>
+    import JSZip from 'jszip'
     import saveAs from './saveAs'
     import MapRange from "./MapRange";
 
@@ -37,10 +38,15 @@
                 districtSelect: null,
                 opts: {},
                 areaData: {},
-                mapData: []
+                mapData: [],
+                zip: {},//打包zip
+                codeList: []
             }
         },
         mounted() {
+            //实例化zip对象
+            this.zip = new JSZip();
+
             this.citySelect = document.getElementById('city');
             this.districtSelect = document.getElementById('district');
             this.echartsMap = this.$echarts.init(document.getElementById('map'));
@@ -103,13 +109,47 @@
                     });
                 });
             },
-            downloadJson(nameType) {
+            downloadJson(nameType) {//单个geo文件下载
                 var blob = new Blob([JSON.stringify(this.geoJsonData)], {type: "text/plain;charset=utf-8"});
                 let filename = this.cityName;
                 if (nameType === 'code') {
                     filename = this.cityCode;
                 }
                 saveAs(blob, `${filename}.geoJson`);//filename
+            },
+            downloadAllJson(nameType) {//一次打包下载所有的数据
+                let filename = this.cityName;
+                if (nameType === 'code') {
+                    filename = this.cityCode;
+                }
+
+                this.loopSearch(this.cityCode);
+
+                console.log(this.codeList)
+
+                // this.zip.file(`${this.cityName}.geoJson`, JSON.stringify(this.geoJsonData));
+                // this.zip.file(`${this.cityCode}.geoJson`, JSON.stringify(this.geoJsonData));
+                // this.zip.generateAsync({type:"blob"})
+                //     .then(function(content) {
+                //         saveAs(content, "geoJson数据包.zip");
+                //     });
+            },
+            loopSearch(code, level) {
+                this.district.search(code, (status, result) => {
+                    if (status == 'complete') {
+                        console.log(level);
+                        for (let i in result.districtList[0].districtList) {
+                            this.codeList.push({
+                                name: result.districtList[0].districtList[i].name,
+                                code: result.districtList[0].districtList[i].adcode,
+                                level: result.districtList[0].districtList[i].level
+                            })
+                            if (result.districtList[0].districtList[i].adcode && result.districtList[0].districtList[i].level != 'district' && result.districtList[0].districtList[i].level != 'street') {
+                                this.loopSearch(result.districtList[0].districtList[i].adcode, result.districtList[0].districtList[i].level)
+                            }
+                        }
+                    }
+                });
             },
             loadMap(mapName, data) {
                 if (data) {
