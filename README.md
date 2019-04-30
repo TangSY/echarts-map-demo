@@ -4,6 +4,8 @@
 省市区县下钻。实现真正的下钻至县级，而不是只到市级。
 亦可下载最新geojson数据。
 
+项目介绍：[https://www.jianshu.com/p/c293c94d9ab7](https://www.jianshu.com/p/c293c94d9ab7)
+
 体验地址：[https://hxkj.vip/demo/echartsMap/](https://hxkj.vip/demo/echartsMap/)
 
 页面效果图：
@@ -23,16 +25,3 @@ npm run serve
 ```
 npm run build
 ```
-
-### Run your tests
-```
-npm run test
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
