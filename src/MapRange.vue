@@ -21,12 +21,17 @@
                 <div class="input-item-prepend"><span class="input-item-text">区县</span></div>
                 <select id='district' style="width:100px" @change='search("district")'></select>
             </div>
-            <p>请选择文件命名方式</p>
+            <p>请选择文件下载方式</p>
             <div class="radio">
-                <input type="radio" value="name" v-model="nameType">地域名称
-                <input type="radio" value="code" v-model="nameType">地域行政编码
+                <input type="radio" value="name" v-model="nameType">单文件【按地域名称命名】
             </div>
-            <div class="input-item download" @click="download">下载geoJson数据</div>
+            <div class="radio">
+                <input type="radio" value="code" v-model="nameType">单文件【按地域行政编码命名】
+            </div>
+            <div class="radio">
+                <input type="radio" value="all" v-model="nameType">一次性打包下载所有文件
+            </div>
+            <div class="input-item download" @click="download">{{ downloadTips }}</div>
         </div>
     </div>
 </template>
@@ -34,6 +39,12 @@
 <script>
     export default {
         name: "MapRange",
+        props: {
+            downloadTips: {
+                type: String,
+                default: '下载geoJson数据'
+            }
+        },
         data() {
             return {
                 nameType: 'code'
@@ -74,7 +85,7 @@
         position fixed
         top 10px
         left 10px
-        height 250px
+        height 300px
     }
 
     .radio {
