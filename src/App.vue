@@ -9,7 +9,7 @@
         <div class="map">
             <map-range :download-tips="downloadTips" @change="search" @click="downloadJson"></map-range>
         </div>
-        <div class="echarts">
+        <div class="echarts"> 
             <div id="map"></div>
         </div>
         <div class="dialog" v-show="isShowDialog">
