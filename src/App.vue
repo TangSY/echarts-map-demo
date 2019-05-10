@@ -12,7 +12,7 @@
         <div class="echarts"> 
             <div id="map"></div>
         </div>
-        <div class="tips" v-show="isShowTips">正在下载，请耐心等待。。。</div>
+        <div class="tips" v-show="isShowTips">正在下载中，请耐心等待。。。</div>
         <!--哎呀呀，这就是打赏弹窗，为方便你们删除，就单独抽出一个组件来吧-->
         <money-dialog ref="dialog" @confirm="downloadAllJson"></money-dialog>
         <!--github入口-->
