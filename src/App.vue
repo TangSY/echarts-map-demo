@@ -224,7 +224,6 @@
                         map: this.map
                     });
                     let mapJson = {};
-                    console.log(this.codeList,'codelist')
                     for (let i in this.codeList) {
                         setTimeout(() => {
                             districtExplorer.loadAreaNode(this.codeList[i].code, (error, areaNode) => {
