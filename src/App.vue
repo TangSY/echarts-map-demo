@@ -169,6 +169,7 @@
                 setTimeout(() => {
                     this.district.search(code, (status, result) => {
                         if (status == 'complete') {
+                            console.log(`${code}--获取成功`)
                             for (let i in result.districtList[0].districtList) {
                                 this.codeList.push({
                                     name: result.districtList[0].districtList[i].name,
@@ -187,8 +188,10 @@
                                 }
                             }
                         } else {//第一遍查询出错，再次执行查询
+                            console.log(`${code}--第一次获取失败，正在尝试进行第二次获取`)
                             this.district.search(code, (status, result) => {
                                 if (status == 'complete') {
+                                    console.log(`${code}--第二次获取成功`)
                                     for (let i in result.districtList[0].districtList) {
                                         this.codeList.push({
                                             name: result.districtList[0].districtList[i].name,
@@ -203,6 +206,8 @@
                                             this.isCodeListLoadComplete = true;
                                         }
                                     }
+                                } else {
+                                    console.log(`${code}--第二次获取失败，请联系email：t@tsy6.com`)
                                 }
                             })
                         }
@@ -219,23 +224,24 @@
                         map: this.map
                     });
                     let mapJson = {};
+                    console.log(this.codeList,'codelist')
                     for (let i in this.codeList) {
                         setTimeout(() => {
                             districtExplorer.loadAreaNode(this.codeList[i].code, (error, areaNode) => {
                                 if (error) {
                                     this.codeList[i].geo = 'error';
-                                    return;
+                                    console.log(`${this.codeList[i].name}--${this.codeList[i].code}，geo 数据获取失败，高德地图的锅^_^`)
+                                } else {
+                                    mapJson.features = areaNode && areaNode.getSubFeatures() || '';
+                                    this.codeList[i].geo = mapJson;
+                                    console.log(`${this.codeList[i].level}--${this.codeList[i].name}--${this.codeList[i].code}，geo 数据获取成功，马上为你打包`)
                                 }
-
-                                mapJson.features = areaNode.getSubFeatures();
-                                this.codeList[i].geo = mapJson;
 
                                 if (this.codeList[i].level === 'province') {
                                     this.zip.file(`100000/${this.codeList[i].code}.geoJson`, JSON.stringify(mapJson));
                                 } else {
                                     this.zip.file(`100000/${this.codeList[i].code.substring(0, 2)}0000/${this.codeList[i].code}.geoJson`, JSON.stringify(mapJson));
                                 }
-                                console.log(`${this.codeList[i].level}Zip--${this.codeList[i].name}--${this.codeList[i].code}`)
 
                                 if (this.codeList.every(item => item.geo)) {
                                     console.log('ziped');
@@ -257,7 +263,7 @@
                                         });
                                 }
                             });
-                        }, 500)
+                        }, 100 * i)
                     }
                 });
             },
