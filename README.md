@@ -11,17 +11,5 @@
 页面效果图：
 ![map.gif](https://upload-images.jianshu.io/upload_images/7412714-3edd0e7bc2c810fa.gif?imageMogr2/auto-orient/strip)
 
-## Project setup
-```
-npm install
-```
-
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
-
-### Compiles and minifies for production
-```
-npm run build
-```
+### 赏跟辣条？
+![pay.jpg](https://raw.githubusercontent.com/TangSY/echarts-map-demo/master/src/images/pay.jpg)
