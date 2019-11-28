@@ -9,7 +9,9 @@
 体验地址：[https://hxkj.vip/demo/echartsMap/](https://hxkj.vip/demo/echartsMap/)
 
 页面效果图：
+
 ![map.gif](https://upload-images.jianshu.io/upload_images/7412714-3edd0e7bc2c810fa.gif?imageMogr2/auto-orient/strip)
 
-### 赏跟辣条？
+### 赏根辣条？
+
 ![pay.jpg](https://raw.githubusercontent.com/TangSY/echarts-map-demo/master/src/images/pay.jpg)
