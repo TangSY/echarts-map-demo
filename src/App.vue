@@ -89,6 +89,66 @@
             }
         },
         methods: {
+            downloadMapCode() {// 下载mapCode数据
+                let mapCode = [],cityMapCode = [],provinceMapCode = [],provinceList = [],cityList = [],districtList=[];
+
+                provinceList = this.codeList.filter(item=>{
+                    return item.level === 'province'
+                })
+                cityList = this.codeList.filter(item=>{
+                    return item.level === 'city'
+                })
+                districtList = this.codeList.filter(item=>{
+                    return item.level === 'district'
+                })
+
+                districtList.forEach(item => {
+                    mapCode.push({
+                        name: item.name,
+                        cityCode: item.code,
+                        fatherCode: `${item.code.substring(0, 4)}00`,
+                        children: []
+                    })
+                })
+
+                for (let i in cityList) {
+                    let children = []
+                    for (let j in mapCode) {
+                        if(mapCode[j].fatherCode == cityList[i].code) {
+                            children.push(mapCode[j])
+                        }
+                    }
+                    cityMapCode.push({
+                        name: cityList[i].name,
+                        cityCode: cityList[i].code,
+                        fatherCode: `${cityList[i].code.substring(0, 2)}0000`,
+                        children: children
+                    })
+                }
+
+                for (let i in provinceList) {
+                    let children = []
+                    for (let j in cityMapCode) {
+                        if(cityMapCode[j].fatherCode == provinceList[i].code) {
+                            children.push(cityMapCode[j])
+                        }
+                    }
+                    provinceMapCode.push({
+                        name: provinceList[i].name,
+                        cityCode: provinceList[i].code,
+                        fatherCode: '100000',
+                        children: children
+                    })
+                }
+
+                if (provinceMapCode.length === 0) return
+                this.zip.file(`mapCode.json`, JSON.stringify(provinceMapCode));
+                this.downloadTips = '文件打包压缩中...';
+                this.zip.generateAsync({type: "blob"})
+                    .then((content) => {
+                        saveAs(content, "mapCode.zip");
+                    });
+            },
             echartsMapClick(params) {//地图点击事件
                 this.$ba.trackEvent('echartsMap', '点击地图', `${params.data.name}-${params.data.cityCode}`);
                 if (params.data.level == 'street') return;
