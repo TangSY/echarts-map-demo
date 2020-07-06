@@ -9,7 +9,7 @@
         <div class="map">
             <map-range :download-tips="downloadTips" @change="search" @click="downloadJson"></map-range>
         </div>
-        <div class="echarts"> 
+        <div class="echarts">
             <div id="map"></div>
         </div>
         <div class="tips" v-show="isShowTips">正在下载，请耐心等待。。。(可打开控制台查看进度详情)</div>
@@ -17,6 +17,8 @@
         <money-dialog ref="dialog" @confirm="downloadAllJson"></money-dialog>
         <!--github入口-->
         <github></github>
+        <!--乡镇数据广告弹窗-->
+        <street-dialog ref="streetDialog" @confirm="contact"></street-dialog>
     </div>
 </template>
 
@@ -25,6 +27,7 @@
     import saveAs from './saveAs'
     import MapRange from "./MapRange";
     import MoneyDialog from "./MoneyDialog";
+    import StreetDialog from "./StreetDialog";
     import Github from "./Github";
 
     export default {
@@ -32,7 +35,9 @@
         components: {
             Github,
             MoneyDialog,
-            MapRange},
+            StreetDialog,
+            MapRange
+        },
         data() {
             return {
                 cityName: '中国',
@@ -90,15 +95,16 @@
         },
         methods: {
             downloadMapCode() {// 下载mapCode数据
-                let mapCode = [],cityMapCode = [],provinceMapCode = [],provinceList = [],cityList = [],districtList=[];
+                let mapCode = [], cityMapCode = [], provinceMapCode = [], provinceList = [], cityList = [],
+                    districtList = [];
 
-                provinceList = this.codeList.filter(item=>{
+                provinceList = this.codeList.filter(item => {
                     return item.level === 'province'
                 })
-                cityList = this.codeList.filter(item=>{
+                cityList = this.codeList.filter(item => {
                     return item.level === 'city'
                 })
-                districtList = this.codeList.filter(item=>{
+                districtList = this.codeList.filter(item => {
                     return item.level === 'district'
                 })
 
@@ -111,10 +117,15 @@
                     })
                 })
 
+                // 筛选出直辖市下面的区县
+                let direct = mapCode.filter(item => {
+                    return item.fatherCode.includes('0000');
+                })
+
                 for (let i in cityList) {
                     let children = []
                     for (let j in mapCode) {
-                        if(mapCode[j].fatherCode == cityList[i].code) {
+                        if (mapCode[j].fatherCode == cityList[i].code) {
                             children.push(mapCode[j])
                         }
                     }
@@ -125,11 +136,12 @@
                         children: children
                     })
                 }
+                cityMapCode = cityMapCode.concat(direct);
 
                 for (let i in provinceList) {
                     let children = []
                     for (let j in cityMapCode) {
-                        if(cityMapCode[j].fatherCode == provinceList[i].code) {
+                        if (cityMapCode[j].fatherCode == provinceList[i].code) {
                             children.push(cityMapCode[j])
                         }
                     }
@@ -202,6 +214,11 @@
                     this.$refs.dialog.show();
                     return;
                 }
+                if (nameType === 'street') {
+                    this.$ba.trackEvent('echartsMap', '文件下载', '下载乡镇数据');
+                    this.$refs.streetDialog.show();
+                    return;
+                }
                 var blob = new Blob([JSON.stringify(this.geoJsonData)], {type: "text/plain;charset=utf-8"});
                 let filename = this.cityName;
                 if (nameType === 'code') {
@@ -239,7 +256,7 @@
                                 //这边没想出来怎么判断数据是否全部加载完毕了，只能采用这种死办法
                                 //有更好解决方案的大佬，麻烦告诉我一下，邮箱t@tsy6.com
                                 //或者直接Github提交PR，在此不胜感激
-                                if (this.codeList.length >= 428) {
+                                if (this.codeList.length >= 428) {// 为 3718 时，获取区县数据，428 省市数据
                                     console.log('code获取完成');
                                     this.isCodeListLoadComplete = true;
                                 }
@@ -472,6 +489,15 @@
                         this.getData(result.districtList[0], obj.id, adcode);
                     }
                 });
+            },
+            // 联系下载乡镇数据
+            contact() {
+                this.$ba.trackEvent('echartsMap', '文件下载', '联系下载');
+                if (/(iPhone|iPad|iPod|iOS|android)/i.test(navigator.userAgent)) {
+                    window.open('mqqwpa://im/chat?chat_type=wpa&uin=2890228902&version=1&src_type=web&web_src=http:://wpa.b.qq.com');
+                } else {
+                    window.open('http://wpa.qq.com/msgrd?v=3&uin=2890228902&site=在线客服&menu=yes');
+                }
             }
         }
     }
