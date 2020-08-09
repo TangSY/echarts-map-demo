@@ -166,6 +166,30 @@ export default {
           saveAs(content, "mapCode.zip");
         });
     },
+    // 下载全国地名和编码（不包含边界数据）
+    downloadNameAndCode() {
+      let opts = {
+        subdistrict: 3, //返回下一级行政区
+        showbiz: false, //最后一级返回街道信息
+      };
+      let district = new AMap.DistrictSearch(opts); //注意：需要使用插件同步下发功能才能这样直接使用
+      district.search('中国', function (status, result) {
+        if (status === 'complete') {
+          getData(result.districtList[0]);
+        }
+      });
+      let _this = this
+      function getData(data) {
+        let districtList = data.districtList;
+
+        let blob = new Blob([JSON.stringify(districtList)], {
+          type: 'text/plain;charset=utf-8',
+        });
+        let filename = '全国省市区县街道和编码（不包含边界数据）';
+        _this.$ba.trackEvent('echartsMap', '全国省市区县街道和编码（不包含边界数据）下载', filename);
+        saveAs(blob, `${filename}.json`); //filename
+      }
+    },
     echartsMapClick(params) {//地图点击事件
       this.$ba.trackEvent('echartsMap', '点击地图', `${params.data.name}-${params.data.cityCode}`);
       if (params.data.level == 'street') return;
@@ -215,6 +239,10 @@ export default {
       }, 3000)
     },
     downloadJson(nameType) {//geo文件下载
+      if (nameType === 'area') {
+        this.downloadNameAndCode();
+        return;
+      }
       if (nameType === 'all') {
         this.$ba.trackEvent('echartsMap', '文件下载', '打包下载全部');
         this.$refs.dialog.show();
