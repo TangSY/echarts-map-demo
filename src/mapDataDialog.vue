@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: TSY
  * @Date: 2020-08-11 23:40:43
- * @LastEditTime: 2020-08-11 23:52:02
+ * @LastEditTime: 2020-08-12 00:00:30
 -->
 /**
 * @Description:    全国乡镇级联数据
@@ -14,6 +14,8 @@
   <div class="dialog"
        v-show="isShowDialog">
     <div class="dialog-content">
+      <div class="dialog-close"
+           @click="closeDialog">&times;</div>
       <table>
         <thead>
           <tr>

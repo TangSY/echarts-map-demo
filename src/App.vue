@@ -26,7 +26,7 @@
                    @confirm="contact"></street-dialog>
     <!--乡镇级联数据下载弹窗-->
     <map-data-dialog ref="mapDataDialog"
-                   @confirm="contact"></map-data-dialog>
+                     @confirm="contact"></map-data-dialog>
   </div>
 </template>
 
@@ -245,6 +245,7 @@ export default {
     },
     downloadJson(nameType) {//geo文件下载
       if (nameType === 'area') {
+        this.$ba.trackEvent('echartsMap', '文件下载', '下载级联数据');
         this.$refs.mapDataDialog.show();
         return;
       }
