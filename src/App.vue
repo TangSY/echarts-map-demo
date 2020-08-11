@@ -24,6 +24,9 @@
     <!--乡镇数据广告弹窗-->
     <street-dialog ref="streetDialog"
                    @confirm="contact"></street-dialog>
+    <!--乡镇级联数据下载弹窗-->
+    <map-data-dialog ref="mapDataDialog"
+                   @confirm="contact"></map-data-dialog>
   </div>
 </template>
 
@@ -33,6 +36,7 @@ import saveAs from './saveAs'
 import MapRange from "./MapRange";
 import MoneyDialog from "./MoneyDialog";
 import StreetDialog from "./StreetDialog";
+import mapDataDialog from "./mapDataDialog";
 import Github from "./Github";
 
 export default {
@@ -41,6 +45,7 @@ export default {
     Github,
     MoneyDialog,
     StreetDialog,
+    mapDataDialog,
     MapRange
   },
   data() {
@@ -240,7 +245,7 @@ export default {
     },
     downloadJson(nameType) {//geo文件下载
       if (nameType === 'area') {
-        this.downloadNameAndCode();
+        this.$refs.mapDataDialog.show();
         return;
       }
       if (nameType === 'all') {

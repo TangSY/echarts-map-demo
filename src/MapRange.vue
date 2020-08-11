@@ -51,7 +51,7 @@
       <div class="radio">
         <input type="radio"
                value="area"
-               v-model="nameType">全国省市区县街道名称和编码
+               v-model="nameType">全国省市区县乡村名称和编码
       </div>
       <div class="input-item download"
            @click="download">{{ downloadTips }}</div>
