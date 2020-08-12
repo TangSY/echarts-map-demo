@@ -21,6 +21,11 @@
                   @confirm="downloadAllJson"></money-dialog>
     <!--github入口-->
     <github></github>
+    <!-- 广告位 -->
+    <img class="ad"
+         @click="$refs.streetDialog.isShowDialog = true"
+         src="./images/ad.jpg"
+         alt="">
     <!--乡镇数据广告弹窗-->
     <street-dialog ref="streetDialog"
                    @confirm="contact"></street-dialog>
@@ -569,4 +574,25 @@ export default {
   color #fff
   background rgba(0, 0, 0, 0.8)
   z-index 999
+.ad
+  position fixed
+  bottom 0
+  left 0
+  z-index 999
+  cursor pointer
+  width 380px
+  animation adShakeAnmation 0.3s infinite
+@keyframes adShakeAnmation
+  0%
+    bottom 1px
+    left 0px
+  30%
+    bottom 1
+    left 10px
+  70%
+    bottom 0px
+    left 1px
+  100%
+    bottom 0
+    left 0
 </style>

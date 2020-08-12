@@ -43,11 +43,11 @@
                value="all"
                v-model="nameType">一次性打包下载所有文件
       </div>
-      <div class="radio">
+      <!-- <div class="radio">
         <input type="radio"
                value="street"
                v-model="nameType">打包下载所有乡镇数据
-      </div>
+      </div> -->
       <div class="radio">
         <input type="radio"
                value="area"
