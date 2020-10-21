@@ -1,9 +1,3 @@
-<!--
- * @Description: 
- * @Author: TSY
- * @Date: 2020-08-11 23:40:43
- * @LastEditTime: 2020-08-12 00:00:30
--->
 /**
 * @Description:    全国乡镇级联数据
 * @Author:         TSY 
@@ -113,55 +107,63 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-.dialog
-  position fixed
-  top 0px
-  left 0px
-  width 100%
-  height 100%
-  display flex
-  align-items center
-  justify-content center
-  background rgba(0, 0, 0, 0.3)
-  z-index 999
-.dialog-content
-  position relative
-  width 600px
-  display flex
-  align-items center
-  flex-direction column
-  background #17c1fb
-  padding 30px
-  border-radius 10px
-  color #fff
-.dialog-title
-  font-size 24px
-  margin-bottom 15px
-.dialog-close
-  font-size 26px
-  position absolute
-  right 20px
-  top 0px
-  cursor pointer
-.dialog-img
-  width 100%
-  display flex
-  align-items center
-  justify-content space-around
-.dialog-img img
-  width 250px
-  height 350px
-.dialog-bottom
-  width 100%
-  margin-top 40px
-  display flex
-  align-items center
-  justify-content space-around
-.dialog-btn
-  position relative
-  padding 10px 20px
-  background #1c71fb
-  margin-bottom 15px
-  border-radius 5px
-  cursor pointer
+.dialog {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.3);
+  z-index: 999;
+}
+.dialog-content {
+  position: relative;
+  width: 600px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  background: #17c1fb;
+  padding: 30px;
+  border-radius: 10px;
+  color: #fff;
+}
+.dialog-title {
+  font-size: 24px;
+  margin-bottom: 15px;
+}
+.dialog-close {
+  font-size: 26px;
+  position: absolute;
+  right: 20px;
+  top: 0px;
+  cursor: pointer;
+}
+.dialog-img {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+.dialog-img img {
+  width: 250px;
+  height: 350px;
+}
+.dialog-bottom {
+  width: 100%;
+  margin-top: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+.dialog-btn {
+  position: relative;
+  padding: 10px 20px;
+  background: #1c71fb;
+  margin-bottom: 15px;
+  border-radius: 5px;
+  cursor: pointer;
+}
 </style>

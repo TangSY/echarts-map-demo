@@ -488,9 +488,9 @@ export default {
           this.mapData = [];
           this.mapData.push({ name: this.cityName, value: Math.random() * 100, level: curlevel });
           this.loadMap(this.cityName, mapJson);
-          this.geoJsonData = mapJson;
           return;
         }
+
         var curList = document.querySelector('#' + curlevel);
         curList.add(contentSub);
         this.mapData = [];
@@ -551,48 +551,60 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-*
-  font-size 14px
-.body
-  display flex
-  width 100%
-.map, .echarts
-  width 0
-  flex 1
-.echarts
-  background url('./images/bg_bigdata.png') no-repeat
-  background-size 100% 100%
-#map
-  width 100%
-  height 100vh
-.tips
-  position fixed
-  bottom 30%
-  left 40%
-  padding 10px 15px
-  border-radius 5px
-  color #fff
-  background rgba(0, 0, 0, 0.8)
-  z-index 999
-.ad
-  position fixed
-  bottom 0
-  left 0
-  z-index 999
-  cursor pointer
-  width 380px
-  animation adShakeAnmation 0.3s infinite
-@keyframes adShakeAnmation
-  0%
-    bottom 1px
-    left 0px
-  30%
-    bottom 1
-    left 10px
-  70%
-    bottom 0px
-    left 1px
-  100%
-    bottom 0
-    left 0
+* {
+  font-size: 14px;
+}
+.body {
+  display: flex;
+  width: 100%;
+}
+.map, .echarts {
+  width: 0;
+  flex: 1;
+}
+.echarts {
+  background: url('./images/bg_bigdata.png') no-repeat;
+  background-size: 100% 100%;
+}
+#map {
+  width: 100%;
+  height: 100vh;
+}
+.tips {
+  position: fixed;
+  bottom: 30%;
+  left: 40%;
+  padding: 10px 15px;
+  border-radius: 5px;
+  color: #fff;
+  background: rgba(0, 0, 0, 0.8);
+  z-index: 999;
+}
+.ad {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  z-index: 999;
+  cursor: pointer;
+  width: 380px;
+  animation: adShakeAnmation 0.3s infinite;
+}
+@keyframes adShakeAnmation {
+  0% {
+    bottom: 1px;
+    left: 0px;
+  }
+  30% {
+    bottom: 1;
+    left: 10px;
+  }
+  70% {
+    bottom: 0px;
+    left: 1px;
+  }
+  100% {
+    bottom: 0;
+    left: 0;
+  }
+}
 </style>
