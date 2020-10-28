@@ -18,14 +18,18 @@
          v-show="isShowTips">正在下载，请耐心等待。。。(可打开控制台查看进度详情)</div>
     <!--哎呀呀，这就是打赏弹窗，为方便你们删除，就单独抽出一个组件来吧-->
     <money-dialog ref="dialog"
-                  @confirm="downloadAllJson"></money-dialog>
+                  @confirm="dialogConfirm"></money-dialog>
     <!--github入口-->
     <github></github>
     <!-- 广告位 -->
-    <img class="ad"
-         @click="$refs.streetDialog.isShowDialog = true"
-         src="./images/ad.jpg"
-         alt="">
+    <div class="ad"
+         v-if="isShowAD">
+      <div class="ad-close"
+           @click="isShowAD = false"></div>
+      <img @click="$refs.streetDialog.isShowDialog = true"
+           src="./images/ad.jpg"
+           alt="">
+    </div>
     <!--乡镇数据广告弹窗-->
     <street-dialog ref="streetDialog"
                    @confirm="contact"></street-dialog>
@@ -55,6 +59,8 @@ export default {
   },
   data() {
     return {
+      isShowAD: true,
+      nameType: '',
       cityName: '中国',
       areaCode: 10000,
       geoJsonData: '',
@@ -249,9 +255,10 @@ export default {
       }, 3000)
     },
     downloadJson(nameType) {//geo文件下载
+      this.nameType = nameType
       if (nameType === 'area') {
         this.$ba.trackEvent('echartsMap', '文件下载', '下载级联数据');
-        this.$refs.mapDataDialog.show();
+        this.$refs.dialog.show();
         return;
       }
       if (nameType === 'all') {
@@ -271,6 +278,13 @@ export default {
       }
       this.$ba.trackEvent('echartsMap', '文件下载', filename);
       saveAs(blob, `${filename}.geoJson`);//filename
+    },
+    dialogConfirm() {
+      if (this.nameType === 'area') {
+        this.$refs.mapDataDialog.show();
+      } else {
+        this.downloadAllJson()
+      }
     },
     downloadAllJson() {//一次打包下载所有的数据
       this.showTips();
@@ -588,6 +602,16 @@ export default {
   cursor: pointer;
   width: 380px;
   animation: adShakeAnmation 0.3s infinite;
+  img {
+    width: 380px;
+  }
+}
+.ad-close {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 20px;
+  height: 20px;
 }
 @keyframes adShakeAnmation {
   0% {
