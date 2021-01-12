@@ -26,7 +26,7 @@
          v-if="isShowAD">
       <div class="ad-close"
            @click="isShowAD = false"></div>
-      <img @click="$refs.streetDialog.isShowDialog = true"
+      <img @click="openAd"
            src="./images/ad.jpg"
            alt="">
     </div>
@@ -559,6 +559,9 @@ export default {
       } else {
         window.open('http://wpa.qq.com/msgrd?v=3&uin=2890228902&site=在线客服&menu=yes');
       }
+    },
+    openAd() {
+      location.href = "https://hxkj.vip/map"
     }
   }
 }
