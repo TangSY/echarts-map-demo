@@ -603,10 +603,9 @@ export default {
   left: 0;
   z-index: 999;
   cursor: pointer;
-  width: 380px;
-  animation: adShakeAnmation 0.3s infinite;
+  width: 420px;
   img {
-    width: 380px;
+    width: 420px;
   }
 }
 .ad-close {
