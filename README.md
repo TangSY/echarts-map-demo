@@ -1,4 +1,3 @@
-[![HitCount](http://hits.dwyl.com/TangSY/echarts-map-demo.svg)](http://hits.dwyl.com/TangSY/echarts-map-demo)
 ![license](https://img.shields.io/badge/license-MIT-blue.svg)
 [![author](https://img.shields.io/badge/author-HashTang-orange.svg)](https://www.hxkj.vip)
 

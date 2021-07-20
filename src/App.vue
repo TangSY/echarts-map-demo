@@ -576,10 +576,12 @@ export default {
 .body {
   display: flex;
   width: 100%;
+  overflow: hidden;
 }
 .map, .echarts {
   width: 0;
   flex: 1;
+  overflow: hidden;
 }
 .echarts {
   background: url('./images/bg_bigdata.png') no-repeat;
@@ -588,6 +590,7 @@ export default {
 #map {
   width: 100%;
   height: 100vh;
+  overflow: hidden;
 }
 .tips {
   position: fixed;
