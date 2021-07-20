@@ -21,16 +21,16 @@
                   @confirm="dialogConfirm"></money-dialog>
     <!--github入口-->
     <github></github>
-    <!-- 广告位 -->
-    <div class="ad"
+    <!-- GG位 -->
+    <div class="gg"
          v-if="isShowAD">
-      <div class="ad-close"
+      <div class="gg-close"
            @click="isShowAD = false"></div>
       <img @click="openAd"
-           src="./images/ad.jpg"
+           :src="AD_IMG"
            alt="">
     </div>
-    <!--乡镇数据广告弹窗-->
+    <!--乡镇数据弹窗-->
     <street-dialog ref="streetDialog"
                    @confirm="contact"></street-dialog>
     <!--乡镇级联数据下载弹窗-->
@@ -47,6 +47,7 @@ import MoneyDialog from "./MoneyDialog";
 import StreetDialog from "./StreetDialog";
 import mapDataDialog from "./mapDataDialog";
 import Github from "./Github";
+import { AD_IMG } from './images/adimg'
 
 export default {
   name: "demo",
@@ -59,6 +60,7 @@ export default {
   },
   data() {
     return {
+      AD_IMG,
       isShowAD: true,
       nameType: '',
       cityName: '中国',
@@ -597,7 +599,7 @@ export default {
   background: rgba(0, 0, 0, 0.8);
   z-index: 999;
 }
-.ad {
+.gg {
   position: fixed;
   bottom: 0;
   left: 0;
@@ -609,7 +611,7 @@ export default {
     width: 380px;
   }
 }
-.ad-close {
+.gg-close {
   position: absolute;
   top: 0;
   left: 0;
