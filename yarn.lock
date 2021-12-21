@@ -1182,6 +1182,11 @@
     string-width "^2.0.0"
     strip-ansi "^5"
 
+"@types/amap-js-sdk@^1.4.2":
+  version "1.4.2"
+  resolved "https://registry.yarnpkg.com/@types/amap-js-sdk/-/amap-js-sdk-1.4.2.tgz#2d0d4b3b8130e77dc6ab5d214542a17e05ff387b"
+  integrity sha512-dM1D22oCq7hBK4Mg3/8FomfY+j0eNYMHpCpbGSS2JzZWJIcPOOYX6M0NtvppBa/WYKEIIIFTpFUkwI24JMEsCA==
+
 "@types/glob@^7.1.1":
   version "7.1.4"
   resolved "https://registry.yarnpkg.com/@types/glob/-/glob-7.1.4.tgz#ea59e21d2ee5c517914cb4bc8e4153b99e566672"

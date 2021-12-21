@@ -69,6 +69,7 @@ export default {
       echartsMap: null,
       map: null,
       uimap: null,
+      /** @type {AMap.DistrictSearch} */
       district: null,
       polygons: [],
       cityCode: 100000,
@@ -110,11 +111,11 @@ export default {
     });
   },
   watch: {
-    isCodeListLoadComplete(val) {
-      if (val) {
-        this.loadAllGeoJson();
-      }
-    }
+    // isCodeListLoadComplete(val) {
+    //   if (val) {
+    //     this.loadAllGeoJson();
+    //   }
+    // }
   },
   methods: {
     downloadMapCode() {// 下载mapCode数据
@@ -288,7 +289,7 @@ export default {
         this.downloadAllJson()
       }
     },
-    downloadAllJson() {//一次打包下载所有的数据
+    async downloadAllJson() {//一次打包下载所有的数据
       this.showTips();
       if (this.downloadTips != '下载geoJson数据') {
         return;
@@ -300,58 +301,101 @@ export default {
       //                this.district.setLevel('country'); //行政区级别
       this.district.setExtensions('all');
       console.log('开始递归循环获取地区code..');
-      this.loopSearch('中国');
+      const res = await this.loopSearch2('中国');
+      console.log(res)
+      this.loadAllGeoJson()
 
     },
-    loopSearch(code) {
-      setTimeout(() => {
-        this.district.search(code, (status, result) => {
-          if (status == 'complete') {
-            console.log(`${code}--获取成功`)
-            for (let i in result.districtList[0].districtList) {
-              this.codeList.push({
-                name: result.districtList[0].districtList[i].name,
-                code: result.districtList[0].districtList[i].adcode,
-                level: result.districtList[0].districtList[i].level
-              })
-              //这边没想出来怎么判断数据是否全部加载完毕了，只能采用这种死办法
-              //有更好解决方案的大佬，麻烦告诉我一下，邮箱t@tsy6.com
-              //或者直接Github提交PR，在此不胜感激
-              if (this.codeList.length >= 428) {// 为 3718 时，获取区县数据，428 省市数据
-                console.log('code获取完成');
-                this.isCodeListLoadComplete = true;
-              }
-              if (result.districtList[0].districtList[i].adcode && result.districtList[0].districtList[i].level != 'city' && result.districtList[0].districtList[i].level != 'district' && result.districtList[0].districtList[i].level != 'street') {
-                this.loopSearch(result.districtList[0].districtList[i].adcode)
+    searchPromisify(code) {
+      return new Promise((resolve, reject) => {
+        this.district.search(code, 
+        /** @param {AMap.DistrictSearchResult} result */
+        (status, result) => {
+          if (status === 'complete') {
+            // 台湾省 result.districtList[0].districtList 是 undefined 兼容一下
+            resolve(result.districtList[0].districtList && result.districtList[0].districtList.map(item => {
+              return {
+                name: item.name,
+                adcode: item.adcode,
+                level: item.level
               }
             }
-          } else {//第一遍查询出错，再次执行查询
-            console.log(`${code}--第一次获取失败，正在尝试进行第二次获取`)
-            this.district.search(code, (status, result) => {
-              if (status == 'complete') {
-                console.log(`${code}--第二次获取成功`)
-                for (let i in result.districtList[0].districtList) {
-                  this.codeList.push({
-                    name: result.districtList[0].districtList[i].name,
-                    code: result.districtList[0].districtList[i].adcode,
-                    level: result.districtList[0].districtList[i].level
-                  })
-                  //这边没想出来怎么判断数据是否全部加载完毕了，只能采用这种死办法
-                  //有更好解决方案的大佬，麻烦告诉我一下，邮箱t@tsy6.com
-                  //或者直接Github提交PR，在此不胜感激
-                  if (this.codeList.length >= 428) {
-                    console.log('code获取完成');
-                    this.isCodeListLoadComplete = true;
-                  }
-                }
-              } else {
-                console.log(`${code}--第二次获取失败，请联系email：t@tsy6.com`)
-              }
-            })
+            ))
+          } else {
+            reject(status)
           }
-        });
-      }, 500)
+        })
+      })
     },
+    async loopSearch2(code, level="city") {
+      try {
+        let notAllowed = []
+        if (level === 'city') {
+          notAllowed = ['city', 'district', 'street'] 
+        }
+        const list = await this.searchPromisify(code)
+        if (!list) return
+        this.codeList = [...this.codeList, ...list ]
+        for (let i =0; i< list.length; i ++) {
+          if (!notAllowed.includes(list[i].level)) {
+            // 这里没有并发，并发多了会报错，可能是浏览器限制。有优化空间
+            await this.loopSearch2(list[i].adcode, level)
+          }
+        }
+      } catch (e) {
+        console.error(e) 
+      }
+      return this.codeList
+    },
+    // loopSearch(code) {
+    //   setTimeout(() => {
+    //     this.district.search(code, (status, result) => {
+    //       if (status == 'complete') {
+    //         console.log(`${code}--获取成功`)
+    //         for (let i in result.districtList[0].districtList) {
+    //           this.codeList.push({
+    //             name: result.districtList[0].districtList[i].name,
+    //             code: result.districtList[0].districtList[i].adcode,
+    //             level: result.districtList[0].districtList[i].level
+    //           })
+    //           //这边没想出来怎么判断数据是否全部加载完毕了，只能采用这种死办法
+    //           //有更好解决方案的大佬，麻烦告诉我一下，邮箱t@tsy6.com
+    //           //或者直接Github提交PR，在此不胜感激
+    //           if (this.codeList.length >= 428) {// 为 3718 时，获取区县数据，428 省市数据
+    //             console.log('code获取完成');
+    //             this.isCodeListLoadComplete = true;
+    //           }
+    //           if (result.districtList[0].districtList[i].adcode && result.districtList[0].districtList[i].level != 'city' && result.districtList[0].districtList[i].level != 'district' && result.districtList[0].districtList[i].level != 'street') {
+    //             this.loopSearch(result.districtList[0].districtList[i].adcode)
+    //           }
+    //         }
+    //       } else {//第一遍查询出错，再次执行查询
+    //         console.log(`${code}--第一次获取失败，正在尝试进行第二次获取`)
+    //         this.district.search(code, (status, result) => {
+    //           if (status == 'complete') {
+    //             console.log(`${code}--第二次获取成功`)
+    //             for (let i in result.districtList[0].districtList) {
+    //               this.codeList.push({
+    //                 name: result.districtList[0].districtList[i].name,
+    //                 code: result.districtList[0].districtList[i].adcode,
+    //                 level: result.districtList[0].districtList[i].level
+    //               })
+    //               //这边没想出来怎么判断数据是否全部加载完毕了，只能采用这种死办法
+    //               //有更好解决方案的大佬，麻烦告诉我一下，邮箱t@tsy6.com
+    //               //或者直接Github提交PR，在此不胜感激
+    //               if (this.codeList.length >= 428) {
+    //                 console.log('code获取完成');
+    //                 this.isCodeListLoadComplete = true;
+    //               }
+    //             }
+    //           } else {
+    //             console.log(`${code}--第二次获取失败，请联系email：t@tsy6.com`)
+    //           }
+    //         })
+    //       }
+    //     });
+    //   }, 500)
+    // },
     loadAllGeoJson() {//通过codeList加载全部geoJson数据
       console.log('开始加载geoJson数据');
       AMapUI.loadUI(['geo/DistrictExplorer'], DistrictExplorer => {
