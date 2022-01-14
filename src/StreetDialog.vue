@@ -39,7 +39,7 @@ export default {
   computed: {},
   methods: {
     demo() {
-      this.$ba.trackEvent('echartsMap', '乡镇数据', '查看示例数据');
+      this.$ba && this.$ba.trackEvent('echartsMap', '乡镇数据', '查看示例数据');
       window.location.href = "https://hxkj.vip/demo/streetMap/index.html"
     },
     closeDialog() {

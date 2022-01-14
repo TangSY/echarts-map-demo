@@ -45,9 +45,9 @@ export default {
     },
     confirmDownload(type) {
       if (type === 'no') {
-        this.$ba.trackEvent('echartsMap', '打赏弹窗', '点击不打赏');
+        this.$ba && this.$ba.trackEvent('echartsMap', '打赏弹窗', '点击不打赏');
       } else {
-        this.$ba.trackEvent('echartsMap', '打赏弹窗', '点击已打赏');
+        this.$ba && this.$ba.trackEvent('echartsMap', '打赏弹窗', '点击已打赏');
       }
       this.$emit('confirm')
       this.isShowDialog = false;
