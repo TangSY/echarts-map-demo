@@ -301,18 +301,18 @@ export default {
       this.waitToLoadList.push(code)
       this.loopSearchOnce()
     },
-    loadingComplete(){
+    loadingComplete () {
       debugger
-      this.isCodeListLoadComplete = true
+      this.isCodeListLoadComplete=true
     },
     loopSearchOnce () {
       const pools=this.loadingThreads
       const idle_thread=pools.findIndex(i => !i)
       if(idle_thread===-1) return
       const code=this.waitToLoadList.shift()
-      if(!code){
-        const active_thread = pools.find(i=>i)
-        if(!active_thread)return this.loadingComplete()
+      if(!code) {
+        const active_thread=pools.find(i => i)
+        if(!active_thread) return this.loadingComplete()
         return
       }
       this.loadedNode[code]=true
@@ -324,10 +324,10 @@ export default {
           console.log(`线程${idle_thread+1}/${pools.length}:${code}--获取成功`)
           const item=result.districtList[0]
           const children=item.districtList
-          
-          children && children.map(i => {
+
+          children&&children.map(i => {
             const { name,adcode,level }=i
-            this.codeList.push({ name,adcode,level,code:adcode })
+            this.codeList.push({ name,adcode,level,code: adcode })
             if('city|district|street'.indexOf(i.level)===-1)
               this.loopSearch(i.adcode)
           })
@@ -352,48 +352,39 @@ export default {
           map: this.map
         });
         let mapJson={};
-        for(let i in this.codeList) {
-          setTimeout(() => {
-            districtExplorer.loadAreaNode(this.codeList[i].code,(error,areaNode) => {
-              if(error) {
-                this.codeList[i].geo='error';
-                console.log(`${this.codeList[i].name}--${this.codeList[i].code}，geo 数据获取失败，高德地图的锅^_^`)
-              } else {
-                mapJson.type="FeatureCollection";
-                mapJson.features=areaNode&&areaNode.getSubFeatures()||'';
-                this.codeList[i].geo=mapJson;
-                console.log(`${this.codeList[i].level}--${this.codeList[i].name}--${this.codeList[i].code}，geo 数据获取成功，马上为你打包`)
-              }
-
-              if(this.codeList[i].level==='province') {
-                this.zip.file(`100000/${this.codeList[i].code}.geoJson`,JSON.stringify(mapJson));
-              } else {
-                this.zip.file(`100000/${this.codeList[i].code.substring(0,2)}0000/${this.codeList[i].code}.geoJson`,JSON.stringify(mapJson));
-              }
-
-              if(this.codeList.every(item => item.geo)) {
-                console.log('ziped');
-                let readme=`\r\n
-                                            项目源码github地址：https://github.com/TangSY/echarts-map-demo （欢迎star）
-                                            \r\n
-                                            个人空间：https://www.hxkj.vip （欢迎闲逛）
-                                            \r\n
-                                             Email：t@tsy6.com  （遇到问题可以反馈）
-                                         `;
-                this.zip.file(`readMe(sourceCode).txt`,readme);
-                this.downloadTips='文件打包压缩中...';
-                this.zip.generateAsync({ type: "blob" })
-                  .then((content) => {
-                    saveAs(content,"geoJson数据包.zip");
-                    this.downloadTips='下载geoJson数据';
-                    this.isCodeListLoadComplete=false;
-                    this.$ba&&this.$ba.trackEvent('echartsMap','文件下载','打包下载成功');
-                  });
-              }
+        const list=this.codeList
+        const tasks=list.map(i => new Promise((res,rej) => {
+          districtExplorer.loadAreaNode(i.code,(error,areaNode) => {
+            if(error) {
+              console.log(`${i.name}--${i.code}，geo 数据获取失败，高德地图的锅^_^`)
+              return res()
+            }
+            mapJson.type="FeatureCollection";
+            mapJson.features=areaNode&&areaNode.getSubFeatures()||'';
+            console.log(`${i.level}--${i.name}--${i.code}，geo 数据获取成功，马上为你打包`)
+            if(i.level==='province') {
+              this.zip.file(`100000/${i.code}.geoJson`,JSON.stringify(mapJson));
+            } else {
+              this.zip.file(`100000/${i.code.substring(0,2)}0000/${i.code}.geoJson`,JSON.stringify(mapJson));
+            }
+            return res()
+          });
+        }))
+        Promise.all(tasks).then(() => {
+          console.log('ziped');
+          let readme=`\r\n项目源码github地址：https://github.com/TangSY/echarts-map-demo （欢迎star）\r\n个人空间：https://www.hxkj.vip （欢迎闲逛）\r\nEmail：t@tsy6.com  （遇到问题可以反馈）`;
+          this.zip.file(`readMe(sourceCode).txt`,readme);
+          this.downloadTips='文件打包压缩中...';
+          this.zip.generateAsync({ type: "blob" })
+            .then((content) => {
+              saveAs(content,"geoJson数据包.zip");
+              this.downloadTips='下载geoJson数据';
+              this.isCodeListLoadComplete=false;
+              this.$ba&&this.$ba.trackEvent('echartsMap','文件下载','打包下载成功');
             });
-          },100*i)
-        }
-      });
+        });
+      })
+
     },
     loadMap (mapName,data) {
       if(data) {
