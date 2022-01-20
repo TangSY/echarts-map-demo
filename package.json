@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "echarts": "^4.2.0-rc.2",
-    "jszip": "^3.2.1",
+    "jszip": "^3.7.0",
     "vue": "^2.5.17",
     "vue-ba": "^1.2.5"
   },
