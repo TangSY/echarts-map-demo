@@ -11,7 +11,9 @@
 
 体验地址：[https://hxkj.vip/demo/echartsMap/](https://hxkj.vip/demo/echartsMap/)
 
-##### 上述体验地址中可获取省市区县乡镇四级边界数据；以及四级联动或五级（村级）行政名称与编码对应关系
+#### 上述体验地址中可获取省市区县乡镇四级边界数据；以及四级联动或五级（村级）行政名称与编码对应关系
+
+码云地址：[https://gitee.com/HashTang/echarts-map-demo](https://gitee.com/HashTang/echarts-map-demo)
 
 页面效果图：
 
@@ -19,4 +21,4 @@
 
 ### 赞助
 
-![pay.jpg](https://raw.githubusercontent.com/TangSY/echarts-map-demo/master/src/images/pay.jpg)
+[赞助二维码](https://raw.githubusercontent.com/TangSY/echarts-map-demo/master/src/images/pay.jpg)
