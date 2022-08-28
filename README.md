@@ -10,6 +10,7 @@
 项目介绍：[https://www.jianshu.com/p/c293c94d9ab7](https://www.jianshu.com/p/c293c94d9ab7)
 
 体验地址：[https://hxkj.vip/demo/echartsMap/](https://hxkj.vip/demo/echartsMap/)
+上述体验地址中可获取省市区县乡镇三级或四级城市数据，五级联动（村级）行政编码对应关系
 
 页面效果图：
 
