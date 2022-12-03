@@ -9,7 +9,7 @@
 
 项目介绍：[https://www.jianshu.com/p/c293c94d9ab7](https://www.jianshu.com/p/c293c94d9ab7)
 
-体验地址：[https://hxkj.vip/demo/echartsMap/](https://hxkj.vip/demo/echartsMap/)
+体验地址：[https://geojson.hxkj.vip](https://geojson.hxkj.vip)
 
 #### 上述体验地址中可获取省市区县乡镇四级边界数据；以及四级联动或五级（村级）行政名称与编码对应关系
 
