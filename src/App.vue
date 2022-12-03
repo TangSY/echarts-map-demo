@@ -436,19 +436,6 @@ export default {
             });
           }
         });
-        // Promise.all(tasks).then(() => {
-        //   console.log("ziped");
-        //   let readme = `\r\n项目源码github地址：https://github.com/TangSY/echarts-map-demo （欢迎star）\r\n个人空间：https://www.hxkj.vip （欢迎闲逛）\r\nEmail：t@tsy6.com  （遇到问题可以反馈）`;
-        //   this.zip.file(`readMe(sourceCode).txt`, readme);
-        //   this.downloadTips = "文件打包压缩中...";
-        //   this.zip.generateAsync({ type: "blob" }).then((content) => {
-        //     saveAs(content, "geoJson数据包.zip");
-        //     this.downloadTips = "下载geoJson数据";
-        //     this.isCodeListLoadComplete = false;
-        //     this.$ba &&
-        //       this.$ba.trackEvent("echartsMap", "文件下载", "打包下载成功");
-        //   });
-        // });
       });
     },
     loadMap(mapName, data) {
