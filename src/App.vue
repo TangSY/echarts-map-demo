@@ -417,19 +417,38 @@ export default {
               });
             })
         );
-        Promise.all(tasks).then(() => {
-          console.log("ziped");
-          let readme = `\r\n项目源码github地址：https://github.com/TangSY/echarts-map-demo （欢迎star）\r\n个人空间：https://www.hxkj.vip （欢迎闲逛）\r\nEmail：t@tsy6.com  （遇到问题可以反馈）`;
-          this.zip.file(`readMe(sourceCode).txt`, readme);
-          this.downloadTips = "文件打包压缩中...";
-          this.zip.generateAsync({ type: "blob" }).then((content) => {
-            saveAs(content, "geoJson数据包.zip");
-            this.downloadTips = "下载geoJson数据";
-            this.isCodeListLoadComplete = false;
-            this.$ba &&
-              this.$ba.trackEvent("echartsMap", "文件下载", "打包下载成功");
-          });
+        console.log("总文件个数：", tasks.length);
+        let count = 1;
+        tasks.forEach(async (task) => {
+          await task;
+          count++;
+          if (count === tasks.length) {
+            console.log("ziped");
+            let readme = `\r\n项目源码github地址：https://github.com/TangSY/echarts-map-demo （欢迎star）\r\n个人空间：https://www.hxkj.vip （欢迎闲逛）\r\nEmail：t@tsy6.com  （遇到问题可以反馈）`;
+            this.zip.file(`readMe(sourceCode).txt`, readme);
+            this.downloadTips = "文件打包压缩中...";
+            this.zip.generateAsync({ type: "blob" }).then((content) => {
+              saveAs(content, "geoJson数据包.zip");
+              this.downloadTips = "下载geoJson数据";
+              this.isCodeListLoadComplete = false;
+              this.$ba &&
+                this.$ba.trackEvent("echartsMap", "文件下载", "打包下载成功");
+            });
+          }
         });
+        // Promise.all(tasks).then(() => {
+        //   console.log("ziped");
+        //   let readme = `\r\n项目源码github地址：https://github.com/TangSY/echarts-map-demo （欢迎star）\r\n个人空间：https://www.hxkj.vip （欢迎闲逛）\r\nEmail：t@tsy6.com  （遇到问题可以反馈）`;
+        //   this.zip.file(`readMe(sourceCode).txt`, readme);
+        //   this.downloadTips = "文件打包压缩中...";
+        //   this.zip.generateAsync({ type: "blob" }).then((content) => {
+        //     saveAs(content, "geoJson数据包.zip");
+        //     this.downloadTips = "下载geoJson数据";
+        //     this.isCodeListLoadComplete = false;
+        //     this.$ba &&
+        //       this.$ba.trackEvent("echartsMap", "文件下载", "打包下载成功");
+        //   });
+        // });
       });
     },
     loadMap(mapName, data) {
@@ -604,7 +623,7 @@ export default {
       }
     },
     openAd() {
-      location.href = "https://hxkj.vip/map";
+      location.href = "https://map.hxkj.vip";
     },
   },
 };
@@ -655,10 +674,10 @@ export default {
   left: 0;
   z-index: 999;
   cursor: pointer;
-  width: 420px;
+  width: 320px;
 
   img {
-    width: 420px;
+    width: 320px;
   }
 }
 
