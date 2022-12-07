@@ -17,7 +17,7 @@
 
 页面效果图：
 
-![map.gif](https://upload-images.jianshu.io/upload_images/7412714-3edd0e7bc2c810fa.gif?imageMogr2/auto-orient/strip)
+![map](https://geojson.hxkj.vip/map.png)
 
 ### 赞助
 
