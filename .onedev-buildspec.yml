@@ -49,7 +49,7 @@ jobs:
   - !BranchUpdateTrigger {}
   - !TagCreateTrigger {}
   retryCondition: never
-  maxRetries: 3
+  maxRetries: 30
   retryDelay: 30
   cpuRequirement: 250
   memoryRequirement: 256
