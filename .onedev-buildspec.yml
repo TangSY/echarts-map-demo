@@ -37,13 +37,22 @@ jobs:
 - name: Push to GitHub
   jobExecutor: internal
   steps:
-  - !PushRepository
-    name: push
-    remoteUrl: https://github.com/TangSY/echarts-map-demo
-    userName: TangSY
-    passwordSecret: github-access-token
+  - !CheckoutStep
+    name: checkout
+    cloneCredential: !DefaultCredential {}
     withLfs: false
-    force: false
+    withSubmodules: false
+    condition: ALL_PREVIOUS_STEPS_WERE_SUCCESSFUL
+  - !CommandStep
+    name: push
+    runInContainer: false
+    interpreter: !DefaultInterpreter
+      commands:
+      - git config user.name "TangSY"
+      - git config user.email "337828932@@qq.com"
+      - git remote set-url origin git@@github.com:TangSY/echarts-map-demo.git
+      - git push
+    useTTY: false
     condition: ALL_PREVIOUS_STEPS_WERE_SUCCESSFUL
   triggers:
   - !BranchUpdateTrigger {}
