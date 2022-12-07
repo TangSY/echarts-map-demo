@@ -51,6 +51,7 @@ jobs:
       - git config user.name "TangSY"
       - git config user.email "337828932@@qq.com"
       - git remote set-url origin git@@github.com:TangSY/echarts-map-demo.git
+      - git remote -v
       - git push
     useTTY: false
     condition: ALL_PREVIOUS_STEPS_WERE_SUCCESSFUL
