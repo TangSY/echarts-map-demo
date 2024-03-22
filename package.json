@@ -17,7 +17,7 @@
     "@babel/preset-es2015": "^7.0.0-beta.51",
     "@vue/cli-plugin-babel": "^3.5.1",
     "@vue/cli-plugin-eslint": "^3.0.0-beta.15",
-    "@vue/cli-service": "^3.0.0-beta.15",
+    "@vue/cli-service": "^5.0.8",
     "babel-plugin-component": "^1.1.1",
     "stylus": "^0.54.5",
     "stylus-loader": "^3.0.2",
