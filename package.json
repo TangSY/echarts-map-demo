@@ -10,7 +10,7 @@
   "dependencies": {
     "echarts": "^4.2.0-rc.2",
     "jszip": "^3.8.0",
-    "vue": "^2.5.17",
+    "vue": "^3.0.0",
     "vue-ba": "^1.2.5"
   },
   "devDependencies": {
